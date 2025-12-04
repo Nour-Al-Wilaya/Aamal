@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>نور الولاية</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background: #111827;
+      color: #f9fafb;
+    }
+    .dua-card {
+      transition: all .3s ease;
+    }
+    .dua-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.1);
+    }
+    body.dark-mode .dua-card {
+      background: #1f2937;
+      color: #f9fafb;
+    }
+    body.dark-mode .dua-card h3 {
+      color: #34d399;
+    }
+    body.dark-mode .dua-card p {
+      color: #d1d5db;
+    }
+    .back-btn {
+      background: #16a34a;
+      color: #fff;
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      width: fit-content;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .back-btn:hover {
+      background: #15803d;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .back-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+   .full-dua-interface {
+  background: linear-gradient(to bottom, #f0f9ff, #fff);
+  height: 100vh;
+  padding: 0;
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 50;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* لتحسين التمرير على iOS */
+}
+    body.dark-mode .full-dua-interface {
+      background: linear-gradient(to bottom, #1e293b, #0f172a);
+    }
+    .full-dua-interface .dua-content {
+      background: #fff;
+      padding: 1.5rem;
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    @media (min-width: 768px) {
+      .full-dua-interface .dua-content {
+        max-width: 800px;
+        padding: 2rem;
+        margin: 0 auto;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.05);
+      }
+    }
+    body.dark-mode .full-dua-interface .dua-content {
+      background: #1f2937;
+      color: #f9fafb;
+      box-shadow: 0 5px 15px rgba(0,0,0,.3);
+    }
+    .full-dua-interface h1 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 1rem;
+    }
+    body.dark-mode .full-dua-interface h1 {
+      color: #60a5fa;
+    }
+    .dua-text {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: #166534;
+      white-space: pre-line;
+      text-align: justify;
+      word-break: break-word;
+    }
+    @media (max-width: 768px) {
+      .dua-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        padding: 0 0.5rem;
+      }
+    }
+    body.dark-mode .dua-text {
+      color: #34d399;
+    }
+    .share-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      transition: background 0.2s;
+    }
+    .share-btn:hover {
+      background: #2563eb;
+    }
+    .dark-mode-toggle {
+      position: absolute;
+      left: 1rem;
+      top: 40%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+    body.dark-mode .dark-mode-toggle i {
+      color: #fbbf24;
+    }
+    #searchInput {
+      background-color: white;
+      color: #333;
+    }
+    body.dark-mode #searchInput {
+      background-color: #1f2937;
+      color: #f9fafb;
+    }
+    body.dark-mode #searchBar button i {
+      color: #d1d5db;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+<header id="mainHeader" class="bg-green-800 text-white py-6 shadow-lg relative">
+  <button id="darkModeToggle" class="dark-mode-toggle">
+    <i class="fas fa-moon"></i>
+  </button>
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold text-center"><i class="fas fa-book-quran mr-2"></i>نور الولاية</h1>
+    <div id="searchBar" class="mt-6 max-w-2xl mx-auto relative">
+      <input id="searchInput" placeholder="ابحث عن أدعية..." 
+             class="w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 pr-10"/>
+      <button class="absolute left-3 top-3 text-gray-500"><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+</header>
+
+<main id="duasContentSection" class="container mx-auto px-4 py-12">
+  <div id="duasContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+</main>
+<div id="fullDuaInterface" class="full-dua-interface">
+  <div class="container mx-auto px-4">
+    <a href="#" id="closeDuaBtn" class="back-btn">
+      <i class="fas fa-arrow-right"></i> العودة إلى الرئيسية
+    </a>
+    <div class="dua-content">
+      <h1 id="fullDuaTitle"></h1>
+      <p id="fullDuaDescription" class="description"></p>
+      <div id="fullDuaText" class="dua-text"></div>
+      <button id="shareDuaBtn" class="share-btn">
+        <i class="fas fa-share-alt"></i> مشاركة الدعاء
+      </button>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({duration:800,easing:'ease-in-out',once:true});
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+const body = document.body;
+
+body.classList.remove('dark-mode');
+darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+
+darkModeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  const isDark = body.classList.contains('dark-mode');
+  darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+});
+
+function slugify(title) {
+  return title
+    .toLowerCase()
+    .replace(/[\u0600-\u06FF]/g, c => {
+      const translit = {
+        ' ': '-', 'أ': 'a', 'إ': 'e', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+        'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+        'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': '3',
+        'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+        'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ة': 'a'
+      };
+      return translit[c] || c;
+    })
+    .replace(/[^a-z0-9\-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function findDuaBySlug(slug) {
+  return duas.find(dua => slugify(dua.title) === slug);
+}
+
+const duas = [
+  { title: "دعاء كميل", description: "عن الإمام علي عليه السلام – ليلة الجمعة", text: `` },
+  { title: "دعاء العهد", description: "للإمام المهدي عجل الله فرجه", text: `` },
+  { title: "دعاء الحاجة", description: "المروي عن الأئمة لقضاء الحوائج", text:`` },
+  { title: "دعاء الندبة", description: "أيام الجمع والأعياد الأربعة – للإمام المهدي", text: `` },
+  { title: "دعاء التوسل", description: "للتوسل بالنبي وأهل البيت عليهم السلام", text: `` },
+  { title: "دعاء عرفة", description: "للإمام الحسين عليه السلام – يوم عرفة", text: `` },
+  { title: "دعاء الجوشن الكبير", description: "ليالي القدر", text: `` },
+  { title: "دعاء الجوشن الصغير", description: "", text: `` },
+  { title: "دعاء المشلول", description: "عن الإمام علي عليه السلام", text: `` },
+  { title: "دعاء مكارم الأخلاق", description: "عن الإمام السجاد عليه السلام – الصحيفة السجادية", text: `` },
+  { title: "دعاء الصباح", description: "عن الإمام علي عليه السلام", text: `` },
+  { title: "دعاء الافتتاح", description: "ليالي شهر رمضان", text: `` },
+  { title: "دعاء أبي حمزة الثمالي", description: "أسحار شهر رمضان", text: `` },
+  { title: "دعاء السحر (البُهَيْلَة)", description: "المروي عن الإمام الباقر عليه السلام", text: `` },
+  { title: "دعاء الحفظ", description: "يا حي يا قيوم برحمتك أستغيث…", text: `` },
+  { title: "دعاء اليُستَشير", description: "المروي عن أمير المؤمنين", text: `` },
+  { title: "دعاء الفرج", description: "اللهم كن لوليك الحجة بن الحسن…", text: `` },
+  { title: "دعاء العديلة", description: "عند حضور الموت", text: `` },
+  { title: "دعاء أهل الثغور", description: "للمجاهدين وحماية الحدود", text:`` },
+  { title: "دعاء ميثم التمار", description: "للرزق والبركة", text: `` },
+  { title: "دعاء الندم (التوبة)", description: "ورد في كتب الأدعية", text:`` },
+  { title: "دعاء الحاجة", description: "المروي عن الأئمة لقضاء الحوائج", text:`` },
+  { title: "زيارة عاشوراء", description: "للإمام الحسين عليه السلام", text: `زيارة الامام الحسين عليه السلام يوم عاشوراء المعروفة بـ"زيارة عاشوراء".
+زيارة عاشوراء
+السَّلامُ عَلَيْكَ يا أَبا عَبْدِ اللهِ، السَّلامُ عَلَيْكَ يابْنَ رَسُولِ الله، السَّلامُ عَلَيْكَ يابْنَ أَمِيرِ المُؤْمِنِينَ وَابْنَ سَيِّدِ الوَصِيِّينَ، السَّلامُ عَلَيْكَ يابْنَ فاطِمَةَ سَيِّدَةِ نِساءِ العالَمِينَ، السَّلامُ عَلَيْكَ ياثارَ الله وَابْنَ ثارِهِ وَالوِتْرَ المَوتُورَ، السَّلامُ عَلَيْكَ وَعَلى الاَرْواحِ الَّتِي حَلَّتْ بِفِنائِكَ عَلَيْكُمْ مِنِّي جَميعاً سَلامُ الله أَبَداً مابَقِيتُ وَبَقِيَ اللَيْلُ وَالنَّهارُ.
+يا أَبا عَبْدِ الله لَقَدْ عَظُمَتِ الرَّزِيَّةُ وَجَلّتْ وَعَظُمَتِ المُصِيبَةُ بِكَ عَلَيْنا وَعَلى جَمِيعِ أَهْلِ الإسْلامِ، وَجَلَّتْ وَعَظُمَتْ مُصِيبَتُكَ فِي السَّماواتِ عَلى جَمِيعِ أَهْلِ السَّماواتِ، فَلَعَنَ الله اُمَّةً أَسَّسَتْ أَساسَ الظُّلْمِ وَالجَوْرِ عَلَيْكُمْ أَهْلَ البَيْتِ، وَلَعَنَ الله اُمَّةً دَفَعَتْكُمْ عَنْ مَقامِكُمْ وَأَزالَتْكُمْ عَنْ مَراتِبكُمُ الَّتِي رَتَّبَكُمُ الله فِيها، وَلَعَنَ الله اُمَّةً قَتَلَتْكُمْ وَلَعَنَ الله المُمَهِّدِينَ لَهُمْ بِالتَّمْكِينِ مِنْ قِتالِكُمْ، بَرِئْتُ إِلى الله وَإِلَيْكُمْ مِنْهُمْ وَمِنْ أَشْياعِهِمْ وَأَتْباعِهِمْ وَأَوْلِيائِهِمْ. يا أَبا عَبْدِ الله إِنِّي سِلْمٌ لِمَنْ سالَمَكُمْ وَحَرْبٌ لِمَنْ حارَبَكُمْ إِلى يَوْمِ القِيامَةِ، وَلَعَنَ الله آلَ زِيادٍ وَآلَ مرَوْانٍ وَلَعَنَ الله بَنِي اُمَيَّةَ قاطِبَةً وَلَعَنَ الله ابْنَ مَرْجانَةَ وَلَعَنَ الله عُمَرَ بْنَ سَعْدٍ وَلَعَنَ الله شِمْراً، وَلَعَنَ الله اُمَّةً أَسْرَجَتْ وَأَلجَمَتْ وَتَنَقَّبَتْ لِقِتالِكَ، بِأَبِي أَنْتَ وَاُمِّي لَقَدْ عَظُمَ مُصابِي بِكَ فَأَسْأَلُ الله الَّذِي أَكْرَمَ مَقامَكَ وَأَكْرَمَنِي بك أَنْ يَرْزُقَنِي طَلَبَ ثارِكَ مَعَ إِمامٍ مَنْصُورٍ مِنْ أَهْلِ بَيْتِ مُحَمَّدٍ صَلّى الله عَلَيْهِ وَآلِهِ. اللّهُمَّ اجْعَلْنِي عِنْدَكَ وَجِيها بِالحُسَيْنِ عَلَيْهِ السَّلامُ فِي الدُّنْيا وَالآخِرةِ، ياأَبا عَبْدِ الله إِنِّي أَتَقَرَّبُ إِلى الله وَإِلى رَسُولِهِ وَإِلى أَمِيرِ المُؤْمِنِينَ وَإِلى فاطِمَةَ وَإِلى الحَسَنِ وَإِلَيْكَ بِمُوالاتِكَ وَبِالبَرائةِ مِمَّنْ قاتَلَكَ وَنَصَبَ لَكَ الحَرْبَ وَبِالبَرائةِ مِمَّنْ أَسَّسَ أَساسَ الظُّلْمِ وَالجَوْرِ عَلَيْكُمْ، وَأَبْرَأُ إِلى الله وَإِلى رَسُولِهِ مِمَّنْ أَسَّسَ أَساسَ ذلِكَ وَبَنى عَلَيهِ بُنْيانَهُ وَجَرى فِي ظُلْمِهِ وَجَوْرِهِ عَلَيْكُمْ وَعَلى أَشْياعِكُمْ، بَرِئْتُ إِلى الله وَإِلَيْكُمْ مِنْهُمْ وَأَتَقَرَّبُ إِلى الله ثُمَّ إِلَيْكُمْ بِمُوالاتِكُمْ وَمُوالاةِ وَلِيِّكُمْ وَالبَرائةِ مِنْ أَعْدائِكُمْ وَالنَّاصِبِينَ لَكُمْ الحَرْبَ وَبِالبَرائةِ مِنْ أَشْياعِهِمْ وَأَتْباعِهِمْ.
+إِنِّي سِلْمٌ لِمَنْ سالَمَكُمْ وَحَرْبٌ لِمَنْ حارَبَكُمْ وَوَلِيُّ لِمَنْ وَالاكُمْ وَعَدُوٌ لِمَنْ عاداكُمْ، فَأَسْأَلُ الله الَّذِي أَكْرَمَنِي بِمَعْرِفَتِكُمْ وَمَعْرِفَةِ أَوْلِيائِكُمْ وَرَزَقَنِي البَرائةِ مِنْ أَعْدائِكُمْ أَنْ يَجْعَلَنِي مَعَكُمْ فِي الدُّنْيا وَالآخِرةِ وَأَنْ يُثَبِّتَ لِي عِنْدَكُمْ قَدَمَ صِدْقٍ فِي الدُّنْيا وَالآخِرَةِ، وَأَسْأَلُهُ أَنْ يُبَلِّغَنِي المَقامَ المَحْمُودَ لَكُمْ عِنْدَ الله وَأَنْ يَرْزُقَنِي طَلَبَ ثارِي مَعَ إِمامِ هُدىً ظاهِرٍ ناطِقٍ بِالحَقِّ مِنْكُمْ، وَأَسْأَلُ الله بِحَقِّكُمْ وَبِالَّشْأنِ الَّذِي لَكُمْ عِنْدَهُ أَنْ يُعْطِيَنِي بِمُصابِي بِكُمْ أَفْضَلَ مايُعْطِي مُصاباً بِمُصِيبَتِهِ، مُصِيبَةً ماأَعْظَمَها وَأَعْظَمَ رَزِيَّتَها فِي الإسْلامِ وَفِي جَمِيعِ السَّماواتِ وَالأَرْضِ! اللّهُمَّ اجْعَلْنِي فِي مَقامِي هذا مِمَّنْ تَنالَهُ مِنْكَ صَلَواتٌ وَرَحْمَةٌ وَمَغْفِرَهٌ، اللّهُمَّ اجْعَلْ مَحْيايَ مَحْيا مُحَمَّدٍ وَآلِ مُحَمَّدٍ وَمَماتِي مَماتَ مُحَمَّدٍ وَآلِ مُحَمَّدٍ، اللّهُمَّ إِنَّ هذا يَوْمٌ تَبَرَّكَتْ بِهِ بَنُو اُمَيَّةَ وَابْنُ آكِلَةِ الاَكْبادِ اللَّعِينُ ابْنُ اللَّعِينِ عَلى لِسانِكَ وَلِسانِ نَبِيِّكَ صَلّى الله عَلَيهِ وَآلِهِ فِي كُلِّ مَوْطِنٍ وَمَوْقِفٍ وَقَفَ فِيهِ نَبِيُّكَ صَلّى الله عَلَيهِ وَآلِهِ؛
+اللّهُمَّ العَنْ أَبا سُفيانَ وَمُعاوِيَةَ وَيَزِيدَ بْنَ مُعاوِيَةَ عَلَيْهِمْ مِنْكَ اللَّعْنَةُ أَبَدَ الابِدِينَ، وَهذا يَوْمٌ فَرِحَتْ بِهِ آلُ زِيادٍ وَآلُ مَرْوانَ بِقَتْلِهِمُ الحُسَيْنَ صَلَواتُ الله عَلَيْهِ، اللّهُمَّ فَضاعِفْ عَلَيْهِمْ اللَّعْنَ مِنْكَ وَالعَذابَ الاليم، اللّهُمَّ إِنِّي أَتَقَرَّبُ إِلَيْكَ فِي هذا اليَوْمِ وَفِي مَوْقِفِي هذا وَأَيامِ حَياتِي بِالبَرائَةِ مِنْهُمْ وَاللَّعْنَةِ عَلَيْهِمْ وَبِالمُوالاةِ لِنَبِيِّكَ وَآلِ نَبِيِّكَ عَلَيهِ وَعلَيْهِمُ السَّلام.
+ثم تقول "مائة مرة":
+اللّهُمَّ العَنْ أَوَّلَ ظالِمٍ ظَلَمَ حَقَّ مُحَمَّدٍ وَآلِ مُحَمَّدٍ وَآخِرَ تابِعٍ لَهُ عَلى ذلِكَ، اللّهُمَّ العَنْ العِصابَةَ الَّتِي جاهَدَتِ الحُسَيْنَ وَشايَعَتْ وَبايَعَتْ وَتابَعَتْ عَلى قَتْلِهِ اللّهُمَّ العَنْهُمْ جَميعاً.
+ثم تقول "مائة مرة":
+السَّلامُ عَلَيْكَ يا أَبا عَبْدِ الله وَعَلى الأَرواحِ الَّتِي حَلَّتْ بِفِنائِكَ، عَلَيْكَ مِنِّي سَلامُ اللهِ أَبَداً مابَقِيتُ وَبَقِيَ اللَيْلُ وَالنَّهارُ وَلا جَعَلَهُ الله آخِرَ العَهْدِ مِنِّي لِزِيارَتِكُمْ. السَّلامُ عَلى الحُسَيْنِ وَعَلى عَلِيِّ بْنِ الحُسَيْنِ وَعَلى أَوْلادِ الحُسَيْنِ وَعَلى أَصْحابِ الحُسَيْنِ.
+ثم تقول: 
+اللّهُمَّ خُصَّ أَنْتَ أَوَّلَ ظالِمٍ بِاللَّعْنِ مِنِّي وَأَبْدأْ بِهِ أَوَّلاً ثُمَّ الثَّانِي وَالثَّالِثَ وَالرَّابِعَ، اللّهُمَّ الْعَنْ يَزِيدَ خامِساً وَالعَنْ عُبَيْدَ الله بْنَ زِيادٍ وَابْنَ مَرْجانَةَ وَعُمَرَ بْنَ سَعْدٍ وَشِمْراً وَآلَ أَبِي سُفْيانَ وَآلَ زِيادٍ وَآلَ مَرْوانَ إلى يَوْمِ القِيامَةِ.
+زيارة الامام الحسين(ع)؛ يوم الاربعين
+ثم تسجد وَتقول:  
+اللّهُمَّ لَكَ الحَمْدُ حَمْدَ الشَّاكِرِينَ لَكَ عَلى مُصابِهِمْ، الحَمْدُ للهِ عَلى عَظِيمِ رَزِيَّتِي، اللّهُمَّ ارْزُقْنِي شَفاعَةَ الحُسَيْنِ يَوْمَ الوُرُودِ وَثَبِّتْ لِي قَدَمَ صِدْقٍ عِنْدَكَ مَعَ الحُسَيْنِ وَأَصْحابِ الحُسَيْنِ الَّذِينَ بَذَلُوا مُهَجَهُمْ دُونَ الحُسَيْنِ عَلَيهِ السَّلامُ.` },
+  { title: "زيارة وارث", description: "للإمام الحسين عليه السلام", text:`` },
+  { title: "زيارة الجامعة الكبيرة", description: "عن الإمام الهادي عليه السلام", text: `` },
+  { title: "زيارة الجامعة الصغيرة", description: "", text: `` },
+  { title: "زيارة آل يس", description: "للإمام المهدي عجل الله فرجه", text: `` },
+  { title: "زيارة أمين الله", description: "عن الإمام زين العابدين عند قبر أمير المؤمنين", text: `` },
+  { title: "زيارة الإمام علي يوم الغدير", description: "", text: `` },
+  { title: "زيارة النبي محمد صلى الله عليه وآله", description: "", text: `` },
+  { title: "زيارة السيدة فاطمة الزهراء عليها السلام", description: "", text: `` },
+  { title: "زيارة الإمام الكاظم والجواد عليهما السلام", description: "", text: `` },
+  { title: "زيارة الإمام الرضا عليه السلام", description: "", text: `` },
+  { title: "زيارة الإمام الهادي والعسكري عليهما السلام", description: "", text: `` },
+  { title: "زيارة الإمام المهدي في سردابه", description: "", text: `` },
+  { title: "زيارة السيدة زينب عليها السلام", description: "", text: `` },
+  { title: "زيارة العباس بن علي عليه السلام", description: "", text: `` },
+  { title: "زيارة مسلم بن عقيل عليه السلام", description: "", text: `` },
+  { title: "زيارة شهداء كربلاء", description: "", text: `` },
+  { title: "زيارة القبور العامة", description: "للمؤمنين والمؤمنات", text: `` },
+  { title: "زيارة الأربعين", description: "للإمام الحسين عليه السلام", text: `` },
+  { title: "زيارة عاشوراء الثانية", description: "المشهورة بزيارة أخرى", text: `` },
+  { 
+    title: "مناجاة التائبين", 
+    description: "من المناجاة الخمسة عشر", 
+    text: `الْمُنَاجَاةُ الْأُولَى مُنَاجَاةُ التَّائِبِينَ لِيَوْمِ الْجُمُعَةِ :
+بِسْمِ اللَّهِ الرَّحْمنِ الرَّحِيمِ
+إِلَهِي أَلْبَسَتْنِي الْخَطَايَا ثَوْبَ مَذَلَّتِي ، وَ جَلَّلَنِي التَّبَاعُدُ مِنْكَ لِبَاسَ مَسْكَنَتِي ، وَ أَمَاتَ قَلْبِي عَظِيمَ جِنَايَتِي ، فَأَحْيِهِ بِتَوْبَةٍ مِنْكَ يَا أَمَلِي وَ بُغْيَتِي ، وَ يَا سُؤْلِي وَ مُنْيَتِي ، فَوَ عِزَّتِكَ مَا أَجِدُ لِذُنُوبِي سِوَاكَ غَافِراً ، وَ لَا أَرَى لِكَسْرِي غَيْرَكَ جَابِراً ، وَ قَدْ خَضَعْتُ بِالْإِنَابَةِ إِلَيْكَ ، وَ عَنَوْتُ بِالِاسْتِكَانَةِ لَدَيْكَ ، فَإِنْ طَرَدْتَنِي مِنْ بَابِكَ فَبِمَنْ أَلُوذُ ، وَ إِنْ رَدَدْتَنِي عَنْ جَنَابِكَ فَبِمَنْ أَعُوذُ ، فَوَا أَسَفَا مِنْ خَجْلَتِي وَ افْتِضَاحِي ، وَ وَا لَهْفَا مِنْ سُوءِ عَمَلِي وَ اجْتِرَاحِي ، أَسْأَلُكَ يَا غَافِرَ الذَّنْبِ الْكَبِيرِ ، وَ يَا جَابِرَ الْعَظْمِ الْكَسِيرِ ، أَنْ تَهَبَ لِي مُوبِقَاتِ الْجَرَائِرِ ، وَ تَسْتُرَ عَلَيَّ فَاضِحَاتِ السَّرَائِرِ ، وَ لَا تُخْلِنِي فِي مَشْهَدِ الْقِيَامَةِ مِنْ بَرْدِ عَفْوِكَ وَ غَفْرِكَ ، وَ لَا تُعْرِنِي مِنْ جَمِيلِ صَفْحِكَ وَ سَتْرِكَ .
+إِلَهِي ظَلِّلْ عَلَى ذُنُوبِي غَمَامَ رَحْمَتِكَ ، وَ أَرْسِلْ عَلَى عُيُوبِي سَحَابَ رَأْفَتِكَ .
+إِلَهِي هَلْ يَرْجِعُ الْعَبْدُ الْآبِقُ إِلَّا إِلَى مَوْلَاهُ ، أَمْ هَلْ يُجِيرُهُ مِنْ سَخَطِهِ أَحَدٌ سِوَاهُ .
+إِلَهِي إِنْ كَانَ النَّدَمُ عَلَى الذَّنْبِ تَوْبَةً ، فَإِنِّي وَ عِزَّتِكَ مِنَ النَّادِمِينَ ، وَ إِنْ كَانَ الِاسْتِغْفَارُ مِنَ الْخَطِيئَةِ حِطَّةً ، فَإِنِّي لَكَ مِنَ الْمُسْتَغْفِرِينَ ، لَكَ الْعُتْبَى حَتَّى تَرْضَى .
+إِلَهِي بِقُدْرَتِكَ عَلَيَّ تُبْ عَلَيَّ ، وَ بِحِلْمِكَ عَنِّي اعْفُ عَنِّي ، وَ بِعِلْمِكَ بِي ارْفُقْ بِي .
+إِلَهِي أَنْتَ الَّذِي فَتَحْتَ لِعِبَادِكَ بَاباً إِلَى عَفْوِكَ سَمَّيْتَهُ التَّوْبَةَ ، فَقُلْتَ تُوبُوا إِلَى اللَّهِ تَوْبَةً نَصُوحاً ، فَمَا عُذْرُ مَنْ أَغْفَلَ دُخُولَ الْبَابِ بَعْدَ فَتْحِهِ .
+إِلَهِي إِنْ كَانَ قَبُحَ الذَّنْبُ مِنْ عَبْدِكَ ، فَلْيَحْسُنِ الْعَفْوُ مِنْ عِنْدِكَ .
+إِلَهِي مَا أَنَا بِأَوَّلِ مَنْ عَصَاكَ فَتُبْتَ عَلَيْهِ ، وَ تَعَرَّضَ لِمَعْرُوفِكَ فَجُدْتَ عَلَيْهِ ، يَا مُجِيبَ الْمُضْطَرِّ ، يَا كَاشِفَ الضُّرِّ ، يَا عَظِيمَ الْبِرِّ ، يَا عَلِيماً بِمَا فِي السِّرِّ ، يَا جَمِيلَ السَّتْرِ ، اسْتَشْفَعْتُ بِجُودِكَ وَ كَرَمِكَ إِلَيْكَ‏ ، وَ تَوَسَّلْتُ بِحَنَانِكَ [ بِجَنَابِكَ‏ ] وَ تَرَحُّمِكَ لَدَيْكَ ، فَاسْتَجِبْ دُعَائِي ، وَ لَا تُخَيِّبْ فِيكَ رَجَائِي ، وَ تَقَبَّلْ تَوْبَتِي ، وَ كَفِّرْ خَطِيئَتِي ، بِمَنِّكَ وَ رَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِينَ`
+  },
+  { title: "مناجاة الشاكين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة الخائفين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة الراجين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة الراغبين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة الشاكرين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة المطيعين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة المريدين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة المحبين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة المتوسلين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة المفتقرين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة العارفين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة الذاكرين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة المعتصمين", description: "من المناجاة الخمسة عشر", text: "" },
+  { title: "مناجاة الزاهدين", description: "من المناجاة الخمسة عشر", text: "" },
+];
+
+function renderDuas(list = duas) {
+  const c = document.getElementById('duasContainer');
+  c.innerHTML = '';
+  list.forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = "dua-card bg-white rounded-lg shadow-md p-6 cursor-pointer";
+    card.setAttribute('data-aos', 'fade-up');
+    card.onclick = () => openFullDuaInterface(d);
+    card.innerHTML = `
+      <h3 class="text-xl font-bold text-green-800 mb-2">${d.title}</h3>
+      <p class="text-gray-600 mb-4">${d.description || "دعاء"}</p>
+      <div class="text-green-600 font-medium flex items-center justify-between">
+        <span>قراءة ${d.title.includes("زيارة") ? "الزيارة" : d.title.includes("مناجاة") ? "المناجاة" : "الدعاء"}</span>
+        <i class="fas fa-arrow-left"></i>
+      </div>
+    `;
+    c.appendChild(card);
+  });
+}
+
+function openFullDuaInterface(dua) {
+  document.getElementById('mainHeader').style.display = 'none';
+  document.getElementById('duasContentSection').style.display = 'none';
+  document.getElementById('fullDuaInterface').style.display = 'block';
+
+  document.getElementById('fullDuaTitle').textContent = dua.title;
+  document.getElementById('fullDuaDescription').textContent = dua.description || "";
+  document.getElementById('fullDuaText').innerHTML = `<p>${dua.text.replace(/\n/g, '</p><p>')}</p>`;
+
+  const slug = slugify(dua.title);
+  history.pushState({ dua: slug }, '', `?dua=${slug}`);
+
+  const shareBtn = document.getElementById('shareDuaBtn');
+  shareBtn.onclick = () => {
+    const url = `${window.location.origin}${window.location.pathname}?dua=${slug}`;
+    const text = `دعاء: ${dua.title}\n${dua.description}\n\nمن تطبيق نور الولاية`;
+
+    if (navigator.share) {
+      navigator.share({ title: dua.title, text, url }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        alert('تم نسخ رابط الدعاء إلى الحافظة!');
+      }).catch(() => {
+        alert('فشل النسخ، يرجى التحديد والنسخ يدويًا.');
+      });
+    }
+  };
+}
+
+function closeFullDuaInterface() {
+  history.pushState(null, '', window.location.pathname);
+  document.getElementById('mainHeader').style.display = 'block';
+  document.getElementById('duasContentSection').style.display = 'block';
+  document.getElementById('fullDuaInterface').style.display = 'none';
+  renderDuas();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  const t = e.target.value.toLowerCase();
+  const f = duas.filter(d => d.title.toLowerCase().includes(t) || d.description.toLowerCase().includes(t));
+  renderDuas(f);
+});
+
+window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const duaSlug = urlParams.get('dua');
+
+  if (duaSlug) {
+    const dua = findDuaBySlug(duaSlug);
+    if (dua) {
+      openFullDuaInterface(dua);
+      return;
+    }
+  }
+
+  document.getElementById('duasContentSection').style.display = 'block';
+  renderDuas();
+};
+
+document.getElementById('closeDuaBtn').onclick = e => {
+  e.preventDefault();
+  closeFullDuaInterface();
+};
+
+window.addEventListener('popstate', (e) => {
+  if (!e.state || !e.state.dua) {
+    closeFullDuaInterface();
+  }
+});
+</script>
+</body>
+</html>
