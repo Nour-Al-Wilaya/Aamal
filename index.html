@@ -500,11 +500,11 @@
             
             // عرض التاريخ الهجري
             document.getElementById('hijriDateContainer').innerHTML = 
-                ${hijri.weekday}، ${hijri.day} ${hijri.month} ${hijri.year} هـ;
+                `${hijri.weekday}، ${hijri.day} ${hijri.month} ${hijri.year} هـ`;
             
             // عرض التاريخ الميلادي
             document.getElementById('gregorianDate').textContent = 
-                الميلادي: ${currentDate.gregorian};
+                `الميلادي: ${currentDate.gregorian}`;
             
             // عرض اليوم والشهر والسنة بشكل منفصل
             document.getElementById('hijriDay').textContent = hijri.day;
@@ -531,7 +531,7 @@
             
             // التحقق من وجود أعمال لهذا اليوم
             if (hijriWorks[month] && hijriWorks[month][day]) {
-                worksContainer.innerHTML = <div class="text-right">${hijriWorks[month][day]}</div>;
+                worksContainer.innerHTML = `<div class="text-right">${hijriWorks[month][day]}</div>`;
             } else {
                 worksContainer.innerHTML = `
                     <div class="no-works text-center">
@@ -586,7 +586,7 @@
             for (let i = 1; i <= daysInMonth; i++) {
                 const option = document.createElement('option');
                 option.value = i;
-                option.textContent = اليوم ${i};
+                option.textContent = `اليوم ${i}`;
                 daySelect.appendChild(option);
             }
         }
@@ -615,7 +615,7 @@
                 
                 // عرض التاريخ المختار
                 document.getElementById('hijriDateContainer').innerHTML = 
-                    اليوم ${day} من شهر ${monthName};
+                    `اليوم ${day} من شهر ${monthName}`;
                 
                 // عرض الأعمال المختارة
                 displaySpecificWorks(month, day);
